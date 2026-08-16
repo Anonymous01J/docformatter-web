@@ -8,8 +8,8 @@ import * as Sharing from 'expo-sharing';
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || "https://docformatter-api.onrender.com/generate";
-const API_KEY = process.env.EXPO_PUBLIC_API_KEY || "tu_clave_secreta_aqui"; 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
 export default function Index() {
   const { width } = useWindowDimensions();
