@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View, StyleSheet, useWindowDimensions, ScrollView, Platform } from 'react-native';
 import { Appbar, useTheme, Surface, Button, ActivityIndicator, Snackbar, FAB, Tooltip } from 'react-native-paper';
 import { useForm, FormProvider } from 'react-hook-form';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
 import { useAppTheme } from '../constants/ThemeContext';
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://docformatter-api.onrender.com/generate';
+const API_KEY = process.env.EXPO_PUBLIC_API_KEY || '';
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
 export default function Index() {
   const { width } = useWindowDimensions();
