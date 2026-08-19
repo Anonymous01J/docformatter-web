@@ -1,19 +1,25 @@
 import { Slot } from 'expo-router';
-import { PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
-import { useColorScheme } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider, useAppTheme } from '../constants/ThemeContext';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  
-  // Follow system theme by default
-  const theme = colorScheme === 'dark' ? MD3DarkTheme : MD3LightTheme;
+function MainLayout() {
+  const { theme } = useAppTheme();
 
   return (
+    <PaperProvider theme={theme}>
+      <Slot />
+    </PaperProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
     <SafeAreaProvider>
-      <PaperProvider theme={theme}>
-        <Slot />
-      </PaperProvider>
+      <ThemeProvider>
+        <MainLayout />
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }
+

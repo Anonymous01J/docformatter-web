@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TextInput, List, Switch, Text, IconButton, Button, Tooltip, Divider, Portal, Dialog, Paragraph, Menu, TouchableRipple } from 'react-native-paper';
+import { TextInput, List, Switch, Text, IconButton, Button, Tooltip, Divider, Portal, Dialog, Paragraph, Menu, TouchableRipple, useTheme } from 'react-native-paper';
 import { useFormContext, useFieldArray, Controller, useWatch } from 'react-hook-form';
 
 const FONTS = ["Arial", "Times New Roman", "Calibri", "Courier New", "Verdana", "Georgia", "Tahoma", "Trebuchet MS", "Comic Sans MS"];
 
 export default function LeftPanel() {
+  const theme = useTheme();
   const { control } = useFormContext();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'portada.integrantes',
@@ -195,7 +197,7 @@ export default function LeftPanel() {
           </Tooltip>
 
           {formatMode === 'custom' && (
-            <View style={styles.customSection}>
+            <View style={[styles.customSection, { backgroundColor: theme.colors.surfaceVariant }]}>
               <Text variant="titleMedium" style={{ marginBottom: 8, marginTop: 8 }}>Márgenes (cm)</Text>
               <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
                 {['superior', 'inferior', 'izquierdo', 'derecho'].map(pos => (
@@ -360,7 +362,6 @@ const styles = StyleSheet.create({
   customSection: {
     marginTop: 8,
     padding: 12,
-    backgroundColor: '#f5f5f5', // This works well for a subtle background, standard RN styling
     borderRadius: 8,
   }
 });

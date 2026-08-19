@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, useWindowDimensions, ScrollView, Platform } from 'react-native';
-import { Appbar, useTheme, Surface, Button, ActivityIndicator, Snackbar, FAB } from 'react-native-paper';
+import { Appbar, useTheme, Surface, Button, ActivityIndicator, Snackbar, FAB, Tooltip } from 'react-native-paper';
 import { useForm, FormProvider } from 'react-hook-form';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
+import { useAppTheme } from '../constants/ThemeContext';
+
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
@@ -14,6 +16,7 @@ const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 export default function Index() {
   const { width } = useWindowDimensions();
   const theme = useTheme();
+  const { isDark, toggleTheme } = useAppTheme();
 
   const [isMounted, setIsMounted] = useState(false);
   React.useEffect(() => {
@@ -129,9 +132,13 @@ export default function Index() {
       <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <Appbar.Header elevated>
           <Appbar.Content title="DocFormatter" />
-          {/* Aquí iría un botón para ir a Settings y poner el API Key, por ahora lo ocultamos
-          <Appbar.Action icon="cog" onPress={() => {}} /> 
-          */}
+          <Tooltip title={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}>
+            <Appbar.Action
+              icon={isDark ? "weather-sunny" : "weather-night"}
+              onPress={toggleTheme}
+              accessibilityLabel="Alternar tema claro u oscuro"
+            />
+          </Tooltip>
         </Appbar.Header>
 
         {isDesktop ? (
