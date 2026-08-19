@@ -14,7 +14,14 @@ const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 export default function Index() {
   const { width } = useWindowDimensions();
   const theme = useTheme();
-  const isDesktop = width > 800;
+
+  const [isMounted, setIsMounted] = useState(false);
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // En SSR/Vercel asumimos escritorio para el primer render, luego hidratamos con el ancho real
+  const isDesktop = isMounted ? width > 800 : true;
 
   const [loading, setLoading] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -127,23 +134,37 @@ export default function Index() {
           */}
         </Appbar.Header>
 
-        <View style={[styles.mainContent, isDesktop ? styles.row : styles.column]}>
-          
-          {/* Panel Izquierdo: Configuración */}
-          <Surface style={[styles.panel, isDesktop ? styles.leftPanel : styles.fullPanel]} elevation={1}>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-              <LeftPanel />
-            </ScrollView>
-          </Surface>
+        {isDesktop ? (
+          <View style={[styles.mainContent, styles.row]}>
+            {/* Panel Izquierdo: Configuración */}
+            <Surface style={[styles.panel, styles.leftPanel]} elevation={1}>
+              <ScrollView contentContainerStyle={styles.scrollContent}>
+                <LeftPanel />
+              </ScrollView>
+            </Surface>
 
-          {/* Panel Derecho: Editor */}
-          <Surface style={[styles.panel, isDesktop ? styles.rightPanel : styles.fullPanel]} elevation={1}>
-             <View style={styles.scrollContent}>
-              <RightPanel />
-            </View>
-          </Surface>
+            {/* Panel Derecho: Editor */}
+            <Surface style={[styles.panel, styles.rightPanel]} elevation={1}>
+               <View style={styles.scrollContent}>
+                <RightPanel />
+              </View>
+            </Surface>
+          </View>
+        ) : (
+          <ScrollView contentContainerStyle={[styles.mainContent, styles.column]}>
+            <Surface style={[styles.panel, styles.fullPanel, { marginBottom: 16 }]} elevation={1}>
+              <View style={styles.scrollContent}>
+                <LeftPanel />
+              </View>
+            </Surface>
 
-        </View>
+            <Surface style={[styles.panel, styles.fullPanel]} elevation={1}>
+               <View style={styles.scrollContent}>
+                <RightPanel />
+              </View>
+            </Surface>
+          </ScrollView>
+        )}
 
         {/* FAB flotante para generar desde cualquier lugar de la pantalla */}
         <FAB

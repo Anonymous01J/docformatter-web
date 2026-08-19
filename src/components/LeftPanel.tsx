@@ -84,7 +84,7 @@ export default function LeftPanel() {
               <TextInput
                 label="Fecha y Lugar"
                 mode="outlined"
-                placeholder="Ej. Caracas, Julio 2026"
+                placeholder="Ej. Junio del 2026 – Barquisimeto, Venezuela"
                 value={value}
                 onChangeText={onChange}
                 style={styles.input}
